@@ -89,24 +89,30 @@ y_train_R = column_or_1d(y_train_R, warn=True)
 
 # Using support vector machine model to fit X the training data.
 
+# For the classification, we are using the modified dummy variable version of Per_Admit.
 clf = svm.SVC()
 clf.fit(X_train, y_train)
 
+# For the regression, we're using the unmodified Per_Admit (not the dummy).
+# This is because we want to predict continuous outputs.
 regr = svm.SVR()
 regr.fit(X_train_R, y_train_R)
 
 
+# This is the prediction function for the classification support vector machine model.
 def SVM_CLF_Prediction(ACT_75TH,Hist_Black,Total_ENROLL,Total_Price,Per_Non_White,Per_Women):
     Prediction = clf.predict([[ACT_75TH,Hist_Black,Total_ENROLL,Total_Price,Per_Non_White,Per_Women]])
     return Prediction
 
+# The classifications are working as expected.
 SVM_CLF_Prediction(ACT_75TH=1,Hist_Black=0,Total_ENROLL=1,Total_Price=1,Per_Non_White=0,Per_Women=1)
 
-SVM_CLF_Prediction(ACT_75TH=0,Hist_Black=0,Total_ENROLL=0,Total_Price=0,Per_Non_White=0,Per_Women=0)
+SVM_CLF_Prediction(ACT_75TH=0.2,Hist_Black=0.2,Total_ENROLL=0.2,Total_Price=0.2,Per_Non_White=0.5,Per_Women=0.5)
+
+
 
 # We're predicting the Selectivity rate based on these inputs using the regression version.
-
-
+# This is the prediction function for the regression support vector machine model.
 def SVM_REG_Prediction(ACT_75TH,Hist_Black,Total_ENROLL,Total_Price,Per_Non_White,Per_Women):
     Prediction = regr.predict([[ACT_75TH,Hist_Black,Total_ENROLL,Total_Price,Per_Non_White,Per_Women]])
     return Prediction
